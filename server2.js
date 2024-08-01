@@ -48,6 +48,7 @@ app.post('/token', (req, res) => {
     const { token } = req.body;
     if (!token) return res.sendStatus(401);
     if (!refreshTokens.includes(token)) return res.sendStatus(403);
+
     jwt.verify(token, REFRESH_SECRET_KEY, (err, user) => {
         if (err) return res.sendStatus(403);
         const accessToken = jwt.sign({ username: user.username, id: user.id }, SECRET_KEY, { expiresIn: '30s' });
